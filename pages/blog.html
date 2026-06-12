@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Digital marketing insights, AI marketing tips, SEO guides, and performance marketing strategies from the BeAlexander team.">
+  <title>Blog — BeAlexander | Digital Marketing Insights & AI Marketing Tips</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="site-nav"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container" style="position:relative;z-index:1">
+        <span class="badge badge--blue" style="margin-bottom:20px">📚 Insights & Strategy</span>
+        <h1 class="page-hero__headline" data-animate>The Conquest Playbook</h1>
+        <p class="page-hero__sub" data-animate data-delay="0.08s">
+          Tactical digital marketing insights, AI strategies, and performance marketing guides — written by practitioners who actually run campaigns, not just write about them.
+        </p>
+      </div>
+    </section>
+
+    <!-- Blog Body -->
+    <section class="section">
+      <div class="container">
+        <div class="blog-layout">
+
+          <!-- Posts Grid -->
+          <div>
+            <div id="blog-grid" class="blog-grid">
+              <!-- Rendered by JS -->
+              <div style="text-align:center;padding:60px;color:var(--text-light)">
+                <div style="font-size:32px;margin-bottom:12px">⏳</div>
+                <p>Loading posts…</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="blog-sidebar">
+            <!-- Search -->
+            <div class="sidebar-widget">
+              <div class="sidebar-widget__title">Search</div>
+              <input
+                type="search"
+                id="blog-search"
+                placeholder="Search articles…"
+                class="form-input"
+                style="margin-top:4px"
+                oninput="handleBlogSearch(this.value)"
+              >
+            </div>
+
+            <!-- Categories -->
+            <div class="sidebar-widget">
+              <div class="sidebar-widget__title">Categories</div>
+              <div class="sidebar-cats">
+                <div class="sidebar-cat active" data-cat="all">All Posts <span>0</span></div>
+                <div class="sidebar-cat" data-cat="AI Marketing">AI Marketing <span>0</span></div>
+                <div class="sidebar-cat" data-cat="Paid Advertising">Paid Advertising <span>0</span></div>
+                <div class="sidebar-cat" data-cat="SEO">SEO <span>0</span></div>
+                <div class="sidebar-cat" data-cat="Content Marketing">Content Marketing <span>0</span></div>
+                <div class="sidebar-cat" data-cat="Email Marketing">Email Marketing <span>0</span></div>
+                <div class="sidebar-cat" data-cat="Social Media">Social Media <span>0</span></div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="sidebar-cta">
+              <strong>Ready to Conquer Your Market?</strong>
+              <p>Get a free 30-minute strategy session with the BeAlexander team.</p>
+              <a href="contact.html" class="btn btn--primary" style="width:100%;justify-content:center;font-size:13px">Book Free Session →</a>
+            </div>
+
+            <!-- Featured post -->
+            <div class="sidebar-widget" id="sidebar-featured" style="display:none">
+              <div class="sidebar-widget__title">Featured Post</div>
+              <div id="sidebar-featured-content"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner" style="padding:64px 0">
+      <div class="container" style="position:relative;z-index:1;text-align:center">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,3.5vw,42px);font-weight:700;color:#fff;margin-bottom:16px">Want This Expertise Working for Your Brand?</h2>
+        <p style="font-size:17px;color:rgba(255,255,255,0.6);max-width:480px;margin:0 auto 28px">Reading about marketing is the first step. Let us execute it for you.</p>
+        <a href="contact.html" class="btn btn--primary btn--lg">Get Your Free Strategy Session →</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/components.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function handleBlogSearch(query) {
+      query = query.toLowerCase().trim();
+      const grid = document.getElementById('blog-grid');
+      BlogEngine.seedPosts();
+      const posts = BlogEngine.getPosts().filter(p => p.status === 'published');
+      const filtered = query
+        ? posts.filter(p =>
+            p.title.toLowerCase().includes(query) ||
+            p.excerpt?.toLowerCase().includes(query) ||
+            p.category?.toLowerCase().includes(query)
+          )
+        : posts;
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div style="text-align:center;padding:60px;color:var(--text-light)"><p style="font-size:36px;margin-bottom:12px">🔍</p><p>No articles found for "${query}".</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((post, i) => `
+        <article class="blog-card" onclick="openPost('${post.slug || post.id}')">
+          <div class="blog-card__img" style="background:linear-gradient(135deg,${post.color||'#2B0A6B'} 0%,#1A1A2E 100%)">
+            <span class="blog-card__cat">${post.category || 'Marketing'}</span>
+          </div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta">
+              <span>✍ ${post.author || 'BeAlexander'}</span>
+              <span>· ${new Date(post.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
+              <span>· ${post.readTime || '5 min read'}</span>
+            </div>
+            <h2 class="blog-card__title">${post.title}</h2>
+            <p class="blog-card__excerpt">${post.excerpt || ''}</p>
+            <span class="blog-card__read">Read Article →</span>
+          </div>
+        </article>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

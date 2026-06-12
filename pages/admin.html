@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BeAlexander — Blog Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { background: #F0EEF8; }
+    .admin-view { display: none; }
+    .admin-view:first-of-type { display: block; }
+    #view-dashboard { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__logo">
+        <div class="admin-sidebar__logo-mark">B</div>
+        <div>
+          <div class="admin-sidebar__logo-text">BeAlexander</div>
+          <div class="admin-sidebar__logo-sub">Blog Admin</div>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <div class="admin-nav__section">Main</div>
+        <a href="#" data-view="view-dashboard" class="active">
+          <span>📊</span><span>Dashboard</span>
+        </a>
+        <a href="#" data-view="view-posts">
+          <span>📝</span><span>All Posts</span>
+        </a>
+        <a href="#" data-view="view-editor" id="nav-new-post">
+          <span>✏️</span><span>New Post</span>
+        </a>
+
+        <div class="admin-nav__section">Settings</div>
+        <a href="#" data-view="view-categories">
+          <span>🏷️</span><span>Categories</span>
+        </a>
+
+        <div class="admin-nav__section">Site</div>
+        <a href="../index.html" target="_blank">
+          <span>🌐</span><span>View Website</span>
+        </a>
+        <a href="blog.html" target="_blank">
+          <span>📚</span><span>View Blog</span>
+        </a>
+      </nav>
+
+      <div style="padding:16px 20px;margin-top:auto">
+        <div style="padding:14px;background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.2);border-radius:10px">
+          <p style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em">Blog Engine</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.45)">Posts stored in localStorage. Shared with the live blog page.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ── -->
+    <div class="admin-main">
+
+      <!-- ════════ DASHBOARD VIEW ════════ -->
+      <div id="view-dashboard" class="admin-view">
+        <div class="admin-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p>Welcome back. Here is your blog at a glance.</p>
+          </div>
+          <button class="btn btn--primary" id="btn-new-post">+ New Post</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+          <div class="admin-stat">
+            <div class="admin-stat__num" id="stat-total">—</div>
+            <div class="admin-stat__label">Total Posts</div>
+            <div class="admin-stat__change admin-stat__change--up">↑ All time</div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat__num" id="stat-published">—</div>
+            <div class="admin-stat__label">Published</div>
+            <div class="admin-stat__change admin-stat__change--up">↑ Live on blog</div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat__num" id="stat-drafts">—</div>
+            <div class="admin-stat__label">Drafts</div>
+            <div class="admin-stat__change" style="color:var(--text-light)">Saved locally</div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat__num">∞</div>
+            <div class="admin-stat__label">Storage</div>
+            <div class="admin-stat__change" style="color:var(--text-light)">localStorage</div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="admin-panel">
+          <div class="admin-panel__header">
+            <h2>Quick Actions</h2>
+          </div>
+          <div class="admin-panel__body" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <button onclick="showView('view-editor');clearEditor()" class="service-card" style="text-align:center;padding:24px;cursor:pointer">
+              <div style="font-size:28px;margin-bottom:8px">✏️</div>
+              <div style="font-weight:700;font-size:14px;color:var(--text-dark)">Write New Post</div>
+              <div style="font-size:12px;color:var(--text-light);margin-top:4px">Start from scratch</div>
+            </button>
+            <button onclick="showView('view-posts')" class="service-card" style="text-align:center;padding:24px;cursor:pointer">
+              <div style="font-size:28px;margin-bottom:8px">📋</div>
+              <div style="font-weight:700;font-size:14px;color:var(--text-dark)">Manage Posts</div>
+              <div style="font-size:12px;color:var(--text-light);margin-top:4px">Edit or delete posts</div>
+            </button>
+            <a href="blog.html" target="_blank" class="service-card" style="text-align:center;padding:24px;display:block">
+              <div style="font-size:28px;margin-bottom:8px">🌐</div>
+              <div style="font-weight:700;font-size:14px;color:var(--text-dark)">Preview Blog</div>
+              <div style="font-size:12px;color:var(--text-light);margin-top:4px">See the live blog</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Recent posts preview -->
+        <div class="admin-panel">
+          <div class="admin-panel__header">
+            <h2>Recent Posts</h2>
+            <button onclick="showView('view-posts')" style="font-size:13px;color:var(--purple);background:none;font-weight:600">View All →</button>
+          </div>
+          <div class="admin-panel__body" style="padding:0">
+            <table class="posts-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-posts-table-preview"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════ ALL POSTS VIEW ════════ -->
+      <div id="view-posts" class="admin-view">
+        <div class="admin-header">
+          <div>
+            <h1>All Posts</h1>
+            <p id="posts-count-label">Loading…</p>
+          </div>
+          <button class="btn btn--primary" onclick="showView('view-editor');clearEditor()">+ New Post</button>
+        </div>
+
+        <!-- Filter bar -->
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+          <button class="badge badge--blue post-filter-btn active" data-filter="all" onclick="filterPosts('all',this)" style="cursor:pointer;padding:8px 16px">All</button>
+          <button class="badge post-filter-btn" data-filter="published" onclick="filterPosts('published',this)" style="cursor:pointer;padding:8px 16px;background:rgba(34,197,94,0.12);color:#166534;border:1px solid rgba(34,197,94,0.25)">Published</button>
+          <button class="badge post-filter-btn" data-filter="draft" onclick="filterPosts('draft',this)" style="cursor:pointer;padding:8px 16px;background:rgba(212,160,23,0.12);color:#854D0E;border:1px solid rgba(212,160,23,0.25)">Drafts</button>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-panel__body" style="padding:0">
+            <table class="posts-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-posts-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════ EDITOR VIEW ════════ -->
+      <div id="view-editor" class="admin-view">
+        <div class="admin-header">
+          <div>
+            <h1 id="editor-headline">New Post</h1>
+            <p id="word-count">0 words</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn--ghost" style="color:var(--text-dark);border-color:var(--border)" onclick="saveEditorPost('draft')">Save Draft</button>
+            <button class="btn btn--primary" onclick="saveEditorPost('published')">🚀 Publish Post</button>
+          </div>
+        </div>
+
+        <div class="editor-layout">
+          <!-- Main editor -->
+          <div class="editor-main">
+            <!-- Title -->
+            <div class="admin-panel">
+              <div class="admin-panel__body">
+                <input
+                  type="hidden"
+                  id="editor-post-id"
+                  value=""
+                >
+                <input
+                  type="text"
+                  id="editor-title"
+                  class="post-title-input"
+                  placeholder="Post title…"
+                  oninput="updateWordCount()"
+                >
+              </div>
+            </div>
+
+            <!-- Excerpt -->
+            <div class="admin-panel">
+              <div class="admin-panel__header"><h2>Excerpt / Summary</h2></div>
+              <div class="admin-panel__body">
+                <textarea
+                  id="editor-excerpt"
+                  class="form-textarea"
+                  placeholder="Write a short 1–2 sentence summary of this post. This appears on the blog listing page and in search results…"
+                  style="min-height:80px;border-radius:var(--radius-md)"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Content Editor -->
+            <div class="admin-panel">
+              <div class="admin-panel__header"><h2>Post Content</h2></div>
+              <!-- Toolbar -->
+              <div class="editor-toolbar">
+                <button class="editor-btn" onclick="insertFormat('h2')" title="Heading 2">H2</button>
+                <button class="editor-btn" onclick="insertFormat('h3')" title="Heading 3">H3</button>
+                <button class="editor-btn" onclick="insertFormat('b')" title="Bold"><b>B</b></button>
+                <button class="editor-btn" onclick="insertFormat('i')" title="Italic"><i>I</i></button>
+                <button class="editor-btn" onclick="insertFormat('ul')" title="Bullet List">• List</button>
+                <button class="editor-btn" onclick="insertFormat('ol')" title="Numbered List">1. List</button>
+                <button class="editor-btn" onclick="insertFormat('quote')" title="Blockquote">" Quote</button>
+                <button class="editor-btn" onclick="insertFormat('link')" title="Insert Link">🔗 Link</button>
+                <div style="flex:1"></div>
+                <button class="editor-btn" onclick="togglePreview()" id="preview-btn" title="Preview">👁 Preview</button>
+              </div>
+              <textarea
+                id="editor-content"
+                class="post-content-area"
+                placeholder="Write your post content here using HTML tags...
+
+Examples:
+<h2>Section Heading</h2>
+<p>Paragraph text here.</p>
+<ul>
+  <li>Point one</li>
+  <li>Point two</li>
+</ul>
+<blockquote><p>A powerful quote here.</p></blockquote>
+<strong>Bold text</strong>, <em>italic text</em>
+
+Use the toolbar above for shortcuts."
+                oninput="updateWordCount()"
+              ></textarea>
+
+              <!-- Preview panel (hidden by default) -->
+              <div id="content-preview" style="display:none;padding:28px;border-top:1px solid #EEE;max-height:500px;overflow-y:auto" class="prose"></div>
+            </div>
+          </div>
+
+          <!-- Sidebar settings -->
+          <div class="editor-sidebar">
+            <!-- Publish settings -->
+            <div class="admin-panel" style="margin-bottom:16px">
+              <div class="admin-panel__header"><h2>Publish Settings</h2></div>
+              <div class="admin-panel__body" style="display:flex;flex-direction:column;gap:14px">
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Status</label>
+                  <select id="editor-status" class="form-select" style="font-size:14px">
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Category</label>
+                  <select id="editor-category" class="form-select" style="font-size:14px">
+                    <option value="AI Marketing">AI Marketing</option>
+                    <option value="Paid Advertising">Paid Advertising</option>
+                    <option value="SEO">SEO</option>
+                    <option value="Content Marketing">Content Marketing</option>
+                    <option value="Email Marketing">Email Marketing</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Strategy">Strategy</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Read Time</label>
+                  <input type="text" id="editor-read-time" class="form-input" placeholder="Auto-calculated…" style="font-size:14px">
+                  <span style="font-size:11px;color:var(--text-light);margin-top:4px;display:block">Leave blank to auto-calculate</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px">
+                  <button class="btn btn--primary" onclick="saveEditorPost('published')" style="width:100%;justify-content:center;font-size:14px">🚀 Publish</button>
+                  <button class="btn btn--outline-purple" onclick="saveEditorPost('draft')" style="width:100%;justify-content:center;font-size:14px">💾 Save Draft</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="admin-panel">
+              <div class="admin-panel__header"><h2>Writing Tips</h2></div>
+              <div class="admin-panel__body" style="display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--lavender);border-radius:8px;line-height:1.6">
+                  <strong style="color:var(--purple)">Headline:</strong> Make it specific and outcome-focused. "How to 3× Your Meta Ads ROAS" beats "Tips for Ads".
+                </div>
+                <div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--lavender);border-radius:8px;line-height:1.6">
+                  <strong style="color:var(--purple)">Structure:</strong> Use H2 headings every 200–300 words. Break up text with bullets and quotes.
+                </div>
+                <div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--lavender);border-radius:8px;line-height:1.6">
+                  <strong style="color:var(--purple)">Length:</strong> Aim for 800–1,500 words for most posts. Use the word counter above.
+                </div>
+                <div style="font-size:13px;color:var(--text-mid);padding:10px;background:var(--lavender);border-radius:8px;line-height:1.6">
+                  <strong style="color:var(--purple)">HTML Tags:</strong> Content is rendered as HTML. Use &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;blockquote&gt;.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════ CATEGORIES VIEW ════════ -->
+      <div id="view-categories" class="admin-view">
+        <div class="admin-header">
+          <div>
+            <h1>Categories</h1>
+            <p>Manage blog post categories.</p>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-panel__header"><h2>Active Categories</h2></div>
+          <div class="admin-panel__body">
+            <div id="categories-list" style="display:flex;flex-direction:column;gap:10px"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-main -->
+  </div><!-- /admin-layout -->
+
+  <div id="toast" class="toast"></div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    /* ── View switcher ── */
+    function showView(id) {
+      document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'block';
+      document.querySelectorAll('.admin-nav a[data-view]').forEach(l => l.classList.remove('active'));
+      const navLink = document.querySelector(`.admin-nav a[data-view="${id}"]`);
+      if (navLink) navLink.classList.add('active');
+
+      if (id === 'view-posts') renderFullTable();
+      if (id === 'view-categories') renderCategories();
+    }
+
+    /* ── Nav link clicks ── */
+    document.querySelectorAll('.admin-nav a[data-view]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const view = link.dataset.view;
+        showView(view);
+        if (view === 'view-editor') clearEditor();
+      });
+    });
+
+    /* New post button */
+    document.getElementById('btn-new-post')?.addEventListener('click', () => {
+      showView('view-editor');
+      clearEditor();
+    });
+
+    /* ── Init ── */
+    BlogEngine.seedPosts();
+    renderAdminStats();
+    renderPreviewTable();
+
+    function renderPreviewTable() {
+      const tbody = document.getElementById('admin-posts-table-preview');
+      if (!tbody) return;
+      const posts = BlogEngine.getPosts().slice(0, 5);
+      if (!posts.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-light)">No posts yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = posts.map(post => buildTableRow(post)).join('');
+      const label = document.getElementById('posts-count-label');
+      if (label) label.textContent = `${posts.length} posts total`;
+    }
+
+    function renderFullTable(filter = 'all') {
+      const tbody = document.getElementById('admin-posts-table');
+      if (!tbody) return;
+      let posts = BlogEngine.getPosts();
+      if (filter !== 'all') posts = posts.filter(p => p.status === filter);
+
+      const label = document.getElementById('posts-count-label');
+      if (label) label.textContent = `${posts.length} post${posts.length !== 1 ? 's' : ''} ${filter !== 'all' ? `(${filter})` : 'total'}`;
+
+      if (!posts.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-light)">No posts found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = posts.map(p => buildTableRow(p)).join('');
+    }
+
+    function buildTableRow(post) {
+      return `
+        <tr>
+          <td>
+            <strong style="color:var(--text-dark);font-size:14px">${escHtml(post.title)}</strong>
+            <div style="font-size:12px;color:var(--text-light);margin-top:2px">${post.slug || '—'}</div>
+          </td>
+          <td><span class="badge badge--${post.category === 'AI Marketing' ? 'blue' : 'gold'}" style="font-size:11px">${escHtml(post.category || 'General')}</span></td>
+          <td style="font-size:13px;color:var(--text-light)">${formatDate(post.date)}</td>
+          <td>
+            <span class="post-status post-status--${post.status}">
+              <span class="post-status--dot"></span>
+              ${post.status === 'published' ? 'Published' : 'Draft'}
+            </span>
+          </td>
+          <td>
+            <button class="table-action table-action--edit" onclick="editPost('${post.id}')">Edit</button>
+            <button class="table-action table-action--delete" onclick="confirmDelete('${post.id}', '${escHtml(post.title).replace(/'/g,"\\'")}')">Delete</button>
+            ${post.status === 'published' ? `<a href="post.html?id=${post.slug || post.id}" target="_blank" style="display:inline-flex;align-items:center;padding:5px 10px;border-radius:6px;font-size:12px;color:var(--blue);background:rgba(0,112,243,0.08)">View →</a>` : ''}
+          </td>
+        </tr>`;
+    }
+
+    function filterPosts(filter, btn) {
+      document.querySelectorAll('.post-filter-btn').forEach(b => {
+        b.style.opacity = '0.5';
+        b.style.fontWeight = '500';
+      });
+      btn.style.opacity = '1';
+      btn.style.fontWeight = '700';
+      renderFullTable(filter);
+    }
+
+    /* Override editPost to use admin's showView */
+    const _originalEditPost = window.editPost;
+    window.editPost = function(id) {
+      _originalEditPost(id);
+      showView('view-editor');
+    };
+
+    /* Preview toggle */
+    function togglePreview() {
+      const preview = document.getElementById('content-preview');
+      const editor = document.getElementById('editor-content');
+      const btn = document.getElementById('preview-btn');
+      if (preview.style.display === 'none') {
+        preview.innerHTML = editor.value || '<p style="color:var(--text-light)">Nothing to preview yet.</p>';
+        preview.style.display = 'block';
+        editor.style.display = 'none';
+        btn.textContent = '✏️ Edit';
+        btn.classList.add('active');
+      } else {
+        preview.style.display = 'none';
+        editor.style.display = 'block';
+        btn.textContent = '👁 Preview';
+        btn.classList.remove('active');
+      }
+    }
+
+    /* After save, refresh tables */
+    const _origSave = window.saveEditorPost;
+    window.saveEditorPost = function(status) {
+      _origSave(status);
+      renderPreviewTable();
+      renderAdminStats();
+      if (status === 'published') {
+        setTimeout(() => { showView('view-posts'); renderFullTable(); }, 1300);
+      }
+    };
+
+    /* After delete, refresh */
+    const _origDelete = window.confirmDelete;
+    window.confirmDelete = function(id, title) {
+      if (confirm(`Delete "${title}"?\n\nThis cannot be undone.`)) {
+        BlogEngine.deletePost(id);
+        renderFullTable();
+        renderPreviewTable();
+        renderAdminStats();
+        showToast('Post deleted', 'error');
+      }
+    };
+
+    function renderCategories() {
+      const el = document.getElementById('categories-list');
+      if (!el) return;
+      const cats = ['AI Marketing', 'Paid Advertising', 'SEO', 'Content Marketing', 'Email Marketing', 'Social Media', 'Strategy'];
+      const posts = BlogEngine.getPosts();
+      el.innerHTML = cats.map(cat => {
+        const count = posts.filter(p => p.category === cat).length;
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--lavender);border-radius:10px;border:1px solid var(--border)">
+            <span style="font-size:14px;font-weight:600;color:var(--text-dark)">${cat}</span>
+            <span class="badge badge--blue" style="font-size:11px">${count} post${count !== 1 ? 's' : ''}</span>
+          </div>`;
+      }).join('');
+    }
+
+    /* Helpers available in admin scope */
+    function escHtml(str) {
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+    function formatDate(d) {
+      if (!d) return '—';
+      return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    }
+  </script>
+</body>
+</html>
