@@ -1200,6 +1200,7 @@ h1, h2, h3, h4, h5 {
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   gap: 48px;
   padding-bottom: 56px;
+  padding-top: 20px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
