@@ -414,8 +414,23 @@
   <script src="js/main.js"></script>
 
   <style>
+    .results-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr; } }
+
+    /* About/Services inline grids */
+    @media (max-width: 900px) {
+      .about-origin-grid,
+      .mvv-grid,
+      .values-grid,
+      .service-detail-grid,
+      .more-services-grid,
+      .services-intro-grid { grid-template-columns: 1fr !important; }
+    }
     @media (max-width: 768px) {
-      .results-grid { grid-template-columns: 1fr !important; }
+      .capabilities-grid { grid-template-columns: repeat(2,1fr) !important; }
+    }
+    @media (max-width: 480px) {
+      .capabilities-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </body>
