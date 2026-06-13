@@ -103,37 +103,22 @@ const BlogEngine = {
 };
 
 /* ============================================================
-   NAVIGATION
+   NAVIGATION — scroll effect only
+   (Mobile menu open/close is handled in components.js,
+    wired immediately after the nav HTML is injected)
    ============================================================ */
 function initNav() {
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
+  /* Use a short delay so components.js has finished injecting the nav */
+  setTimeout(() => {
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
 
-  /* Scroll effect */
-  const onScroll = () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  /* Active link */
-  const path = window.location.pathname;
-  document.querySelectorAll('.nav__links a').forEach(link => {
-    if (link.getAttribute('href') === path ||
-        (path !== '/' && link.getAttribute('href') && path.startsWith(link.getAttribute('href')))) {
-      link.classList.add('active');
-    }
-  });
-
-  /* Mobile menu */
-  const hamburger = document.querySelector('.nav__hamburger');
-  const mobileMenu = document.querySelector('.mobile-menu');
-  const mobileClose = document.querySelector('.mobile-menu__close');
-
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
-    mobileClose?.addEventListener('click', () => mobileMenu.classList.remove('open'));
-  }
+    const onScroll = () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }, 0);
 }
 
 /* ============================================================
